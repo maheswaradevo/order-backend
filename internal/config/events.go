@@ -2,7 +2,8 @@ package config
 
 import (
 	"fmt"
-	"order-service-backend/internal/models"
+
+	"github.com/maheswaradevo/order-backend/internal/models"
 
 	"github.com/ThreeDotsLabs/watermill"
 	"github.com/ThreeDotsLabs/watermill-amqp/v2/pkg/amqp"

@@ -3,15 +3,16 @@ package usecase
 import (
 	"errors"
 	"fmt"
-	"order-service-backend/internal/common/helpers"
-	"order-service-backend/internal/entity"
-	"order-service-backend/internal/gateway/messaging"
-	"order-service-backend/internal/models"
-	"order-service-backend/internal/models/consumer"
-	"order-service-backend/internal/repository"
+
 	"strings"
 
 	"github.com/labstack/echo/v4"
+	"github.com/maheswaradevo/order-backend/internal/common/helpers"
+	"github.com/maheswaradevo/order-backend/internal/entity"
+	"github.com/maheswaradevo/order-backend/internal/gateway/messaging"
+	"github.com/maheswaradevo/order-backend/internal/models"
+	"github.com/maheswaradevo/order-backend/internal/models/consumer"
+	"github.com/maheswaradevo/order-backend/internal/repository"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )

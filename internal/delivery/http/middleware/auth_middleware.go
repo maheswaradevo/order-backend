@@ -2,8 +2,9 @@ package middleware
 
 import (
 	"errors"
-	"order-service-backend/internal/config"
 	"strings"
+
+	"github.com/maheswaradevo/order-backend/internal/config"
 
 	"github.com/golang-jwt/jwt"
 	middleware "github.com/labstack/echo-jwt"

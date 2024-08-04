@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"order-service-backend/internal/common/constants"
-	"order-service-backend/internal/config"
-	"order-service-backend/internal/delivery/http/middleware"
-	"order-service-backend/internal/delivery/http/route"
+
+	"github.com/maheswaradevo/order-backend/internal/common/constants"
+	"github.com/maheswaradevo/order-backend/internal/config"
+	"github.com/maheswaradevo/order-backend/internal/delivery/http/middleware"
+	"github.com/maheswaradevo/order-backend/internal/delivery/http/route"
 
 	"go.uber.org/zap"
 )

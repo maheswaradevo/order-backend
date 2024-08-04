@@ -2,7 +2,8 @@ package messaging
 
 import (
 	"encoding/json"
-	"order-service-backend/internal/models"
+
+	"github.com/maheswaradevo/order-backend/internal/models"
 
 	"github.com/ThreeDotsLabs/watermill/message"
 	"go.uber.org/zap"
