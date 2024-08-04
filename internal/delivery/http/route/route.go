@@ -3,13 +3,15 @@ package route
 import (
 	"order-service-backend/internal/config"
 	"order-service-backend/internal/delivery/http"
-
 	events "order-service-backend/internal/delivery/messaging"
+	"order-service-backend/internal/gateway/messaging"
 	"order-service-backend/internal/models"
+	"order-service-backend/internal/models/consumer"
 	"order-service-backend/internal/repository"
 	"order-service-backend/internal/usecase"
 	"time"
 
+	"github.com/go-redis/redis/v8"
 	amqp "github.com/rabbitmq/amqp091-go"
 
 	"github.com/labstack/echo/v4"
@@ -31,24 +33,36 @@ type BootstrapConfig struct {
 	RabbitMQChan   *amqp.Channel
 	RabbitMQQuit   chan bool
 	AuthMiddleware *echo.MiddlewareFunc
+	Redis          *redis.Client
 }
 
 func Bootstrap(config *BootstrapConfig) {
+	// repository
 	orderRepository := repository.NewOrderRepository(config.Log)
 
-	orderUseCase := usecase.NewOrderUseCase(config.DB, config.Log, orderRepository)
+	creditLimitCh := make(chan []consumer.CreditLimitEvent)
 
+	// pub
+	orderMessaging := messaging.NewOrderPublisher(&config.Events, config.Log)
+
+	// use case
+	orderUseCase := usecase.NewOrderUseCase(config.DB, config.Log, orderRepository, orderMessaging, creditLimitCh)
+
+	// sub
+	orderConsumer := events.NewOrderConsumer(orderUseCase, creditLimitCh)
+
+	//controller
 	orderController := http.NewOrderController(config.Log, orderUseCase)
 
-	config.App.Use(*config.AuthMiddleware)
+	// config.App.Use(config.AuthMiddleware)
 
 	routeConfig := RouteConfig{
 		App:             config.App,
 		OrderController: orderController,
 	}
 
-	time.AfterFunc(5*time.Second, func() {
-		events.ConsumeUserData(config.Log, &config.Events)
+	time.AfterFunc(2*time.Second, func() {
+		orderConsumer.ConsumeCreditLimitData(config.Log, &config.Events)
 	})
 
 	routeConfig.Setup()
@@ -56,9 +70,11 @@ func Bootstrap(config *BootstrapConfig) {
 
 func (c *RouteConfig) Setup() {
 	//Setup Route
+	c.SetupOrderRoute()
 
 }
 
 func (c *RouteConfig) SetupOrderRoute() {
 	// Setup endpoint
+	c.App.POST("/api/orders", c.OrderController.CreateOrder)
 }

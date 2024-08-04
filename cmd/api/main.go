@@ -23,6 +23,8 @@ func main() {
 		logger.Fatal("failed to start rabbitmq client: ", zap.Error(err))
 	}
 
+	rdb := config.NewRedis(cfg, logger)
+
 	authMiddleware := middleware.NewAuthMiddleware([]byte(cfg.JWTConfig.SecretKey))
 
 	middlewareFunc := authMiddleware.AuthMiddleware()
@@ -36,6 +38,7 @@ func main() {
 		RabbitMQQuit:   rabbitMqClient.QuitChann,
 		Events:         config.NewEvent(cfg),
 		AuthMiddleware: &middlewareFunc,
+		Redis:          rdb,
 	})
 
 	var address string

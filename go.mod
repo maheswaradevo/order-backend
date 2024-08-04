@@ -15,10 +15,17 @@ require (
 	gorm.io/gorm v1.25.11
 )
 
-require github.com/golang-jwt/jwt/v4 v4.4.2 // indirect
+require (
+	github.com/cespare/xxhash/v2 v2.2.0 // indirect
+	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
+	github.com/golang-jwt/jwt/v4 v4.4.2 // indirect
+	github.com/johansetia/jowt v0.0.0-20190903025207-db33278763ae // indirect
+)
 
 require (
 	github.com/cenkalti/backoff/v3 v3.2.2 // indirect
+	github.com/go-redis/redis v6.15.9+incompatible
+	github.com/go-redis/redis/v8 v8.11.5
 	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect

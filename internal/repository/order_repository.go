@@ -19,11 +19,14 @@ func NewOrderRepository(logger *zap.Logger) *OrderRepository {
 
 func (r *OrderRepository) Create(db *gorm.DB, data *models.OrderCreateRequest) (*entity.Order, error) {
 	result := entity.Order{
+		CustomerID:       data.CustomerID,
+		ContractNumber:   data.ContractNumber,
 		OTR:              data.OTR,
 		AdminFee:         data.AdminFee,
 		InstallmentValue: data.InstallmentValue,
 		InterestValue:    data.InterestValue,
 		AssetName:        data.AssetName,
+		Tenor:            data.Tenor,
 		UpdatedAt:        nil,
 	}
 
@@ -83,4 +86,35 @@ func (r *OrderRepository) Delete(db *gorm.DB, id uint64) error {
 		return err
 	}
 	return nil
+}
+
+func (r *OrderRepository) GetAll(db *gorm.DB, data *models.OrderFilter) (*[]entity.Order, int64, error) {
+	var result []entity.Order
+	var count int64
+
+	query := db.Model(&entity.Order{})
+
+	if data.ContractNumber != "" {
+		query = query.Where("no_contract = ?", data.ContractNumber)
+	}
+
+	if data.ID != 0 {
+		query = query.Where("id = ?", data.ID)
+	}
+
+	err := query.Count(&count).Error
+
+	if err != nil {
+		r.logger.Error("failed to get all order: ", zap.Error(err))
+		return nil, 0, err
+	}
+
+	err = query.Find(&result).Error
+
+	if err != nil {
+		r.logger.Error("failed to get all order: ", zap.Error(err))
+		return nil, 0, err
+	}
+
+	return &result, count, nil
 }

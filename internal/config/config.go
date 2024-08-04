@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -14,6 +15,7 @@ type Config struct {
 	Database              Database
 	RabbitMqConfig        RabbitMQConfig
 	JWTConfig             JWTConfig
+	RedisConfig           RedisConfig
 }
 
 type Database struct {
@@ -35,6 +37,12 @@ type RabbitMQConfig struct {
 type JWTConfig struct {
 	SecretKey string
 	Timeout   string
+}
+
+type RedisConfig struct {
+	Address  string
+	Password string
+	DB       int
 }
 
 var config Config
@@ -70,6 +78,17 @@ func Init() {
 	// jwt
 	config.JWTConfig.SecretKey = os.Getenv("JWT_SECRET_KEY")
 	config.JWTConfig.Timeout = os.Getenv("JWT_TIMEOUT")
+
+	//redis
+	config.RedisConfig.Address = os.Getenv("REDIS_ADDRESS")
+	config.RedisConfig.Password = os.Getenv("REDIS_PASSWORD")
+	dbStr := os.Getenv("REDIS_DATABASE")
+	if dbStr == "" {
+		config.RedisConfig.DB = 0
+	} else {
+		db, _ := strconv.Atoi(dbStr)
+		config.RedisConfig.DB = db
+	}
 }
 
 func GetConfig() *Config {
