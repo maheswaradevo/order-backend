@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"order-service-backend/internal/common/constants"
 	"order-service-backend/internal/config"
+	"order-service-backend/internal/delivery/http/middleware"
+	"order-service-backend/internal/delivery/http/route"
 
 	"go.uber.org/zap"
 )
@@ -21,15 +23,22 @@ func main() {
 		logger.Fatal("failed to start rabbitmq client: ", zap.Error(err))
 	}
 
-	config.Bootstrap(&config.BootstrapConfig{
-		DB:           db,
-		Log:          logger,
-		App:          app,
-		Config:       cfg,
-		RabbitMQConn: rabbitMqClient.Conn,
-		RabbitMQChan: rabbitMqClient.Chann,
-		RabbitMQQuit: rabbitMqClient.QuitChann,
-		Events:       config.NewEvent(cfg),
+	rdb := config.NewRedis(cfg, logger)
+
+	authMiddleware := middleware.NewAuthMiddleware([]byte(cfg.JWTConfig.SecretKey))
+
+	middlewareFunc := authMiddleware.AuthMiddleware()
+	route.Bootstrap(&route.BootstrapConfig{
+		DB:             db,
+		Log:            logger,
+		App:            app,
+		Config:         cfg,
+		RabbitMQConn:   rabbitMqClient.Conn,
+		RabbitMQChan:   rabbitMqClient.Chann,
+		RabbitMQQuit:   rabbitMqClient.QuitChann,
+		Events:         config.NewEvent(cfg),
+		AuthMiddleware: &middlewareFunc,
+		Redis:          rdb,
 	})
 
 	var address string
