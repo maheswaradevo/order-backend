@@ -1,15 +1,16 @@
 package route
 
 import (
-	"order-service-backend/internal/config"
-	"order-service-backend/internal/delivery/http"
-	events "order-service-backend/internal/delivery/messaging"
-	"order-service-backend/internal/gateway/messaging"
-	"order-service-backend/internal/models"
-	"order-service-backend/internal/models/consumer"
-	"order-service-backend/internal/repository"
-	"order-service-backend/internal/usecase"
 	"time"
+
+	"github.com/maheswaradevo/order-backend/internal/config"
+	"github.com/maheswaradevo/order-backend/internal/delivery/http"
+	events "github.com/maheswaradevo/order-backend/internal/delivery/messaging"
+	"github.com/maheswaradevo/order-backend/internal/gateway/messaging"
+	"github.com/maheswaradevo/order-backend/internal/models"
+	"github.com/maheswaradevo/order-backend/internal/models/consumer"
+	"github.com/maheswaradevo/order-backend/internal/repository"
+	"github.com/maheswaradevo/order-backend/internal/usecase"
 
 	"github.com/go-redis/redis/v8"
 	amqp "github.com/rabbitmq/amqp091-go"

@@ -2,8 +2,9 @@ package messaging
 
 import (
 	"encoding/json"
-	commons "order-service-backend/internal/common"
-	"order-service-backend/internal/models"
+
+	commons "github.com/maheswaradevo/order-backend/internal/common"
+	"github.com/maheswaradevo/order-backend/internal/models"
 
 	"github.com/ThreeDotsLabs/watermill/message"
 	"go.uber.org/zap"

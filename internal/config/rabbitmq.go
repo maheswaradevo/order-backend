@@ -2,8 +2,9 @@ package config
 
 import (
 	"fmt"
-	commons "order-service-backend/internal/common"
 	"time"
+
+	commons "github.com/maheswaradevo/order-backend/internal/common"
 
 	amqp "github.com/rabbitmq/amqp091-go"
 	"go.uber.org/zap"

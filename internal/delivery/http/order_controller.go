@@ -2,11 +2,12 @@ package http
 
 import (
 	"net/http"
-	commons "order-service-backend/internal/common"
-	"order-service-backend/internal/common/jwt"
-	"order-service-backend/internal/models"
-	"order-service-backend/internal/usecase"
 	"strings"
+
+	commons "github.com/maheswaradevo/order-backend/internal/common"
+	"github.com/maheswaradevo/order-backend/internal/common/jwt"
+	"github.com/maheswaradevo/order-backend/internal/models"
+	"github.com/maheswaradevo/order-backend/internal/usecase"
 
 	"github.com/labstack/echo/v4"
 	"go.uber.org/zap"

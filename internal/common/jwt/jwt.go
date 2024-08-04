@@ -2,8 +2,9 @@ package jwt
 
 import (
 	"fmt"
-	"order-service-backend/internal/config"
 	"time"
+
+	"github.com/maheswaradevo/order-backend/internal/config"
 
 	"github.com/golang-jwt/jwt"
 )

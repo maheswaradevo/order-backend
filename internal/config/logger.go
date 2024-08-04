@@ -1,7 +1,7 @@
 package config
 
 import (
-	"order-service-backend/internal/common/constants"
+	"github.com/maheswaradevo/order-backend/internal/common/constants"
 
 	"go.uber.org/zap"
 )

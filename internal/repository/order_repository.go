@@ -1,15 +1,13 @@
 package repository
 
 import (
-	"order-service-backend/internal/entity"
-	"order-service-backend/internal/models"
-
+	"github.com/maheswaradevo/order-backend/internal/entity"
+	"github.com/maheswaradevo/order-backend/internal/models"
 	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
 type OrderRepository struct {
-	Repository[entity.Order]
 	logger *zap.Logger
 }
 
